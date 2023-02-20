@@ -1,0 +1,1 @@
+Use DTO's StatusRequest, Status Response use convertor to convert the object to Status and back. Return Response Entities oin controller.
