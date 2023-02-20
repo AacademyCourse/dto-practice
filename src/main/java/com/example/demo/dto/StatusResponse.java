@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CurrencyResponse {
+public class StatusResponse {
 
-    String id;
-    String currencyName;
+    Long id;
+    String statusName;
 }

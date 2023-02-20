@@ -2,11 +2,8 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
-
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -15,10 +12,16 @@ import java.util.Set;
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(unique = true)
     private String statusName;
 
+//    @ManyToMany
+//    @JoinTable(
+//            name = "client_statuses",
+//            joinColumns = {@JoinColumn(name = "client_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "status_id")}
+//    )
+//    private Set<Client> clients;
 }
