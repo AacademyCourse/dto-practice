@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Builder
 @Getter
 @Setter
-public class CurrencyResponse {
-    private String currencyName;
+public class ClientResponse {
+    private String firstName;
+    private String lastName;
+    private String address;
 }

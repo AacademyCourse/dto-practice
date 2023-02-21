@@ -3,22 +3,18 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "statuses")
+@Entity (name = "statuses")
 public class Status {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column (name = "id", nullable = false)
     private Long id;
 
-    @Column(unique = true)
-    private String statusName;
-
+    @Column (unique = true)
+    private String name;
 }

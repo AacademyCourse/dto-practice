@@ -7,7 +7,7 @@ import java.util.Set;
 public interface CurrencyService {
     Currency addCurrency(Currency currency);
     void deleteCurrency(Long id);
-    Currency findByName(String name);
-    Currency findById(Long id);
+    Currency findCurrencyByCurrencyCode(String currencyCode);
+    Currency findCurrencyById(Long id);
     Set<Currency> findAll();
 }

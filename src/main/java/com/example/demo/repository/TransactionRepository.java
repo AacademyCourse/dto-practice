@@ -1,10 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Status;
+import com.example.demo.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StatusRepository extends JpaRepository<Status, Long> {
-    Status findStatusByName(String statusName);
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 }

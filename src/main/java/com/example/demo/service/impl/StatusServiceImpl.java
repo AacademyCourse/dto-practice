@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.Status;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.StatusService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class StatusServiceImpl implements StatusService {
     private final StatusRepository statusRepository;
+
     @Autowired
     public StatusServiceImpl(StatusRepository statusRepository) {
         this.statusRepository = statusRepository;
@@ -21,17 +21,28 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public Status addStatus(Status status) {
-       return statusRepository.save(status);
+        Status newStatus = new Status();
+        newStatus.setName(status.getName());
+        return statusRepository.save(status);
     }
 
     @Override
     public void deleteStatus(Long id) {
-       statusRepository.deleteById(id);
+        statusRepository.deleteById(id);
     }
 
     @Override
-    public Status findById(Long id) {
-        return statusRepository.findById(id).orElseThrow();
+    public Status findStatusByName(String statusName) {
+        return statusRepository.findStatusByName(statusName);
+    }
+
+    @Override
+    public Status findStatusById(Long id) {
+        Status searchedStatus = new Status();
+        if (statusRepository.findById(id).isPresent()) {
+            searchedStatus = statusRepository.findById(id).get();
+        }
+        return searchedStatus;
     }
 
     @Override

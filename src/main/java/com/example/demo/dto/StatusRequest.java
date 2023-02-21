@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Builder
 @Getter
 @Setter
-public class CurrencyRequest {
+public class StatusRequest {
     @NotNull
-    @Size (max = 4, min = 2, message = "Currency name should be from 2 to 4 characters!")
-    private String currencyName;
+    @Size(max = 8, min = 2, message = "Status name should be from 2 to 8 characters!")
+    private String statusName;
 }
