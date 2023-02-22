@@ -6,6 +6,7 @@ import com.example.demo.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,8 @@ import java.util.stream.Collectors;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository currencyRepository;
+
+
 
     @Autowired
     public CurrencyServiceImpl(CurrencyRepository currencyRepository) {
@@ -41,6 +44,6 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public Set<Currency> findAll() {
-        return currencyRepository.findAll().stream().collect(Collectors.toSet());
+        return new HashSet<>(currencyRepository.findAll());
     }
 }

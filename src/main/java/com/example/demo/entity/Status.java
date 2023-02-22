@@ -21,4 +21,6 @@ public class Status {
     @Column(unique = true)
     private String statusName;
 
+
+
 }

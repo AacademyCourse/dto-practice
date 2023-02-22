@@ -3,13 +3,11 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.Status;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.StatusService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class StatusServiceImpl implements StatusService {
@@ -38,4 +36,7 @@ public class StatusServiceImpl implements StatusService {
     public Set<Status> findAll() {
         return new HashSet<>(statusRepository.findAll());
     }
+//    public Status findByName(String name) {
+//        return statusRepository.findByStatusCode(name);
+//    }
 }

@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.convertor.CurrencyConvertor;
 import com.example.demo.dto.CurrencyRequest;
 import com.example.demo.dto.CurrencyResponse;
+import com.example.demo.dto.StatusRequest;
+import com.example.demo.dto.StatusResponse;
 import com.example.demo.entity.Currency;
 import com.example.demo.service.impl.CurrencyServiceImpl;
 import jakarta.validation.Valid;
@@ -30,6 +32,7 @@ public class CurrencyController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(convertor.toCurrencyResponse(savedCurrency));
     }
+
 
     @GetMapping(path = "/all")
     ResponseEntity<Set<CurrencyResponse>> getAll() {
