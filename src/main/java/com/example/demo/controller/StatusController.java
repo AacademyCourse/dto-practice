@@ -4,14 +4,13 @@ import com.example.demo.convertor.StatusConvertor;
 import com.example.demo.dto.StatusRequest;
 import com.example.demo.dto.StatusResponse;
 import com.example.demo.entity.Status;
-import com.example.demo.service.StatusService;
+import com.example.demo.service.impl.StatusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Optional;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,15 +19,15 @@ import java.util.stream.Collectors;
 public class StatusController {
 
     @Autowired
-    StatusService statusService;
+    StatusServiceImpl statusServiceImpl;
 
     @Autowired
     StatusConvertor statusConvertor;
 
     @PostMapping
-    ResponseEntity<StatusResponse> save (@RequestBody StatusRequest statusRequest){
+    ResponseEntity<StatusResponse> save (@RequestBody StatusRequest statusRequest) throws SQLIntegrityConstraintViolationException {
         Status status = statusConvertor.convertToStatus(statusRequest);
-        Status savedStatus = statusService.addStatus(status);
+        Status savedStatus = statusServiceImpl.addStatus(status);
         StatusResponse statusResponse = statusConvertor.convertToStatusResponse(savedStatus);
         return ResponseEntity
                 .ok()
@@ -39,12 +38,12 @@ public class StatusController {
     ResponseEntity<StatusResponse> getById(@PathVariable Long id){
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(statusConvertor.convertToStatusResponse(statusService.findById(id)));
+                .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findById(id)));
     }
 
     @GetMapping(path = "/all")
     ResponseEntity<Set<StatusResponse>> getAll(){
-        Set<StatusResponse> statusResponses = statusService.findAll()
+        Set<StatusResponse> statusResponses = statusServiceImpl.findAll()
                 .stream()
                 .map(statusConvertor :: convertToStatusResponse)
                 .collect(Collectors.toSet());
@@ -55,7 +54,7 @@ public class StatusController {
 
     @DeleteMapping(path = "/{id}")
     ResponseEntity<String> deleteById(@PathVariable Long id){
-        statusService.deleteStatus(id);
+        statusServiceImpl.deleteStatus(id);
         return ResponseEntity
                 .ok()
                 .body(String.format("%d deleted", id));

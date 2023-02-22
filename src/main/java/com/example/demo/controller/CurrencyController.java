@@ -4,12 +4,15 @@ import com.example.demo.convertor.CurrencyConvertor;
 import com.example.demo.dto.CurrencyRequest;
 import com.example.demo.dto.CurrencyResponse;
 import com.example.demo.entity.Currency;
-import com.example.demo.service.CurrencyService;
+import com.example.demo.service.impl.CurrencyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,15 +21,15 @@ import java.util.stream.Collectors;
 public class CurrencyController {
 
     @Autowired
-    CurrencyService currencyService;
+    CurrencyServiceImpl currencyServiceImpl;
 
     @Autowired
     CurrencyConvertor currencyConvertor;
 
     @PostMapping
-    ResponseEntity<CurrencyResponse> save(@Valid @RequestBody CurrencyRequest currencyRequest){
+    ResponseEntity<CurrencyResponse> save(@Valid @RequestBody CurrencyRequest currencyRequest) throws SQLIntegrityConstraintViolationException {
         Currency currency = currencyConvertor.convertToCurrency(currencyRequest);
-        Currency currencySaved = currencyService.addCurrency(currency);
+        Currency currencySaved = currencyServiceImpl.addCurrency(currency);
         CurrencyResponse currencyResponse = currencyConvertor.convertToCurrencyResponse(currencySaved);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -37,12 +40,22 @@ public class CurrencyController {
     ResponseEntity<CurrencyResponse> getById(@PathVariable Long id){
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(currencyConvertor.convertToCurrencyResponse(currencyService.findById(id)));
+                .body(currencyConvertor.convertToCurrencyResponse(currencyServiceImpl.findById(id)));
     }
+
+
+   @GetMapping(path = "/code/{currencyCode}")
+   ResponseEntity<CurrencyResponse> getByName(@PathVariable String currencyCode){
+       return ResponseEntity
+               .status(HttpStatus.FOUND)
+               .body(currencyConvertor.convertToCurrencyResponse(currencyServiceImpl.findByName(currencyCode)));
+
+   }
+
 
     @GetMapping(path ="/all")
     ResponseEntity<Set<CurrencyResponse>> getAll(){
-        Set<CurrencyResponse> currenciesResponses = currencyService.findAll()
+        Set<CurrencyResponse> currenciesResponses = currencyServiceImpl.findAll()
                 .stream()
                 .map(currencyConvertor :: convertToCurrencyResponse)
                 .collect(Collectors.toSet());
@@ -52,10 +65,10 @@ public class CurrencyController {
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<String> delete(@PathVariable Long id){
-        currencyService.deleteCurrency(id);
+    ResponseEntity<String> delete(@PathVariable Long id) {
+        currencyServiceImpl.deleteCurrency(id);
         return ResponseEntity
                 .ok()
-                .body(Long.toString(id) + " deleted");
+                .body(Long.toString(id) + " deleted"); //не може без изпълнение да дава, че трие
     }
 }
