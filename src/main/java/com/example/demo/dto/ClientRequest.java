@@ -1,6 +1,8 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -14,15 +16,27 @@ import org.springframework.stereotype.Component;
 @Setter
 public class ClientRequest {
     @NotNull
-    @Size(min = 3, message = "First name should be min 3 characters!")
+    @Size(min = 2, message = "Client first name should contain more than 2 characters!")
     private String firstName;
     @NotNull
-    @Size(min = 3, message = "Last name should be min 3 characters!")
+    @Size(min = 3, message = "Client last name should contain more than 3 characters!")
     private String lastName;
+
+    @Email(message = "Email should have proper email format!")
+    private String email;
+
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", message = "Password should contain: \n" +
+            "Min 1 uppercase letter.\n" +
+            "Min 1 lowercase letter.\n" +
+            "Min 1 special character.\n" +
+            "Min 1 number.\n" +
+            "Min 8 characters.\n" +
+            "Max 30 characters.\n")
+    private String password;
 
     @Size(min = 5, message = "Address should be min 5 characters!")
     private String address;
+
     @NotNull
-    @Size(min = 10, max = 10, message = "IBAN should be 10 characters!")
-    private String iban;
+    private String status;
 }

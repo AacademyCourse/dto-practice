@@ -3,7 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.converter.ClientConverter;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
+import com.example.demo.exception.RecordNotFoundException;
+import com.example.demo.exception.StatusNotFoundException;
 import com.example.demo.service.impl.ClientServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,18 +43,23 @@ public class ClientController {
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<ClientResponse> addClient(@RequestBody @Valid ClientRequest client) {
-        Client newClient = clientService.addClient(clientConverter.convertToClient(client));
+    public ResponseEntity<ClientResponse> saveClient(@RequestBody @Valid ClientRequest client) throws StatusNotFoundException {
+        Client newClient = clientService.saveClient(client);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientConverter.toClientResponse(newClient));
     }
 
-    @PutMapping (path = "/{id}/modify")
-    public Client modifyClient(@PathVariable Long id, @RequestBody @Valid ClientRequest client) {
+    @PostMapping(path = "/login")
+    public Client login(LoginRequest loginRequest) throws RecordNotFoundException {
+        return clientService.login(loginRequest);
+    }
+
+    @PutMapping (path = "/{id}/update")
+    public Client updateClient(@PathVariable Long id, @RequestBody @Valid ClientRequest client) {
         Client getClient = clientService.getClient(id);
         getClient.setFistName(client.getFirstName());
         getClient.setLastName(client.getLastName());
         getClient.setAddress(client.getAddress());
-        return clientService.modifyClient(id, getClient);
+        return clientService.updateClient(id, getClient);
     }
 
     @DeleteMapping (path = "{id}/delete")
