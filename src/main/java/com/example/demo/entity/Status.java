@@ -8,6 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@ToString
 @Entity (name = "statuses")
 public class Status {
     @Id

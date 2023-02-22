@@ -49,7 +49,7 @@ public class ClientController {
     }
 
     @PostMapping(path = "/login")
-    public Client login(LoginRequest loginRequest) throws RecordNotFoundException {
+    public Client login(@RequestBody @Valid LoginRequest loginRequest) throws RecordNotFoundException {
         return clientService.login(loginRequest);
     }
 

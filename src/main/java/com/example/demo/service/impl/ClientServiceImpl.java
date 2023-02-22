@@ -27,9 +27,10 @@ import java.util.Set;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
-    private ClientConverter clientConverter;
+    private final ClientConverter clientConverter;
 
     private final StatusService statusService;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -55,7 +56,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client login(@RequestBody @Valid LoginRequest loginRequest) throws RecordNotFoundException {
+    public Client login(LoginRequest loginRequest) throws RecordNotFoundException {
         Optional<Client> client = clientRepository.findByEmail(loginRequest.getEmail());
         if (client.isEmpty()) {
             throw new RecordNotFoundException("User not found or invalid credentials");
