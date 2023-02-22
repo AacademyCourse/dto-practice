@@ -1,9 +1,10 @@
 package com.example.demo.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -19,6 +20,10 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private String email;
+    @Column
+    private String password;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)

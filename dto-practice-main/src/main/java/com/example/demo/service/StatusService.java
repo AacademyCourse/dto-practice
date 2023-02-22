@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Status;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface StatusService {
@@ -9,4 +10,5 @@ public interface StatusService {
     void deleteStatus (Long id);
     Status findById(Long id);
     Set<Status> findAll();
+    Optional <Status> findByName(String status);
 }
