@@ -27,6 +27,11 @@ public class Client {
     @Column (name = "last_name")
     private String lastName;
 
+    @Column (name = "email", unique = true)
+    private String email;
+
+    private String password;
+
     @Column (name = "iban", unique = true)
     private String iban;
 

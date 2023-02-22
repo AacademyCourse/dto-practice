@@ -36,7 +36,7 @@ public class CurrencyController {
     public ResponseEntity<CurrencyResponse> getCurrency(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(convertor.toCurrencyResponse(currencyService.findCurrencyById(id)));
     }
-    @PostMapping
+    @PostMapping (path = "/add")
     public ResponseEntity<CurrencyResponse> save(@RequestBody @Valid CurrencyRequest currency) {
         Currency saved = currencyService.addCurrency(
                 convertor.convertToCurrency(currency));

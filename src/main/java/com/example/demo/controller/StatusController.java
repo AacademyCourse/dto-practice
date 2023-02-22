@@ -37,7 +37,7 @@ public class StatusController {
         return ResponseEntity.status(HttpStatus.OK).body(statusConverter.toStatusResponse(statusService.findStatusById(id)));
     }
 
-    @PostMapping
+    @PostMapping (path = "/add")
     public ResponseEntity<StatusResponse> save(@RequestBody @Valid StatusRequest status) {
         Status saved = statusService.addStatus(
                 statusConverter.convertToStatus(status));
