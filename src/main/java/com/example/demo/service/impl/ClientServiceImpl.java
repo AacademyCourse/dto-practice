@@ -56,7 +56,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client login(@RequestBody @Valid LoginRequest loginRequest) throws RecordNotFoundException {
-        Optional<Client> client = clientRepository.findClientByEmail(loginRequest.getEmail());
+        Optional<Client> client = clientRepository.findByEmail(loginRequest.getEmail());
         if (client.isEmpty()) {
             throw new RecordNotFoundException("User not found or invalid credentials");
         }
