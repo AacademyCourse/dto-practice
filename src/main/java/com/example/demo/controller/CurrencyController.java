@@ -7,11 +7,9 @@ import com.example.demo.entity.Currency;
 import com.example.demo.service.impl.CurrencyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +34,14 @@ public class CurrencyController {
                 .body(currencyResponse);
     }
 
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<String> delete(@PathVariable Long id) {
+        currencyServiceImpl.deleteCurrency(id);
+        return ResponseEntity
+                .ok()
+                .body(Long.toString(id) + " deleted");
+    }
+
     @GetMapping(path = "/{id}")
     ResponseEntity<CurrencyResponse> getById(@PathVariable Long id){
         return ResponseEntity
@@ -52,7 +58,6 @@ public class CurrencyController {
 
    }
 
-
     @GetMapping(path ="/all")
     ResponseEntity<Set<CurrencyResponse>> getAll(){
         Set<CurrencyResponse> currenciesResponses = currencyServiceImpl.findAll()
@@ -64,11 +69,4 @@ public class CurrencyController {
                 .body(currenciesResponses);
     }
 
-    @DeleteMapping(path = "/{id}")
-    ResponseEntity<String> delete(@PathVariable Long id) {
-        currencyServiceImpl.deleteCurrency(id);
-        return ResponseEntity
-                .ok()
-                .body(Long.toString(id) + " deleted"); //не може без изпълнение да дава, че трие
-    }
 }

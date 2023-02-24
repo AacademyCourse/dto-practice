@@ -1,13 +1,17 @@
 package com.example.demo.runner;
 
+import com.example.demo.entity.Client;
 import com.example.demo.entity.Currency;
 import com.example.demo.entity.Status;
+import com.example.demo.repository.ClientRepository;
 import com.example.demo.repository.CurrencyRepository;
 import com.example.demo.repository.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -16,6 +20,11 @@ public class CommandRunner implements CommandLineRunner {
     StatusRepository statusRepository;
     @Autowired
     CurrencyRepository currencyRepository;
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -36,6 +45,15 @@ public class CommandRunner implements CommandLineRunner {
         Status status3 = new Status();
         status3.setStatusName("GUEST");
         statusRepository.saveAll(List.of(status1, status2, status3));
+
+        Client client = new Client();
+        client.setFirstName("Lilly");
+        client.setLastName("Moneva");
+        client.setIban("iban");
+        client.setAddress("client's address");
+        client.setPassword(bCryptPasswordEncoder.encode("1"));
+        client.setBalance(new BigDecimal("0"));
+        clientRepository.save(client);
 
     }
 }

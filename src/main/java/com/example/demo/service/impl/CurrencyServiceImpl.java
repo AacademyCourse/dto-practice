@@ -14,44 +14,33 @@ import java.util.Set;
 
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
+    private final CurrencyRepository currencyRepository;
 
-    private  CurrencyRepository currencyRepository;
-
-    public CurrencyServiceImpl(CurrencyRepository currencyRepository, CurrencyRepository currencyRepository1) {
-        this.currencyRepository = currencyRepository1;
+    public CurrencyServiceImpl(CurrencyRepository currencyRepository) {
+        this.currencyRepository = currencyRepository;
     }
 
     @Override
-    public Currency addCurrency(Currency currency) throws SQLIntegrityConstraintViolationException  {
+    public Currency addCurrency(Currency currency){
         return  currencyRepository.save(currency);
     }
 
-
     @Override
-    public void deleteCurrency(Long id) throws EmptyResultDataAccessException {
-            try {currencyRepository.deleteById(id);
-            } catch (EmptyResultDataAccessException ex) {};
-    }
-
-    @Override
-    public Currency findByName(String currencyCode) throws RecordNotFoundException {
-        Currency currency = currencyRepository.findByCurrencyCode(currencyCode);
-        if(currency == null){
-            throw new RecordNotFoundException(String.format("Currency %s not found", currencyCode));
-        }
-        return currency;
-
+    public void deleteCurrency(Long id){
+            currencyRepository.deleteById(id);
     }
 
     @Override
     public Currency findById(Long id) {
-           //return currencyRepository.findById(id).orElseThrow(RuntimeException::new);
-        Optional<Currency> currency = currencyRepository.findById(id);
-        if (currency.isPresent()) {
-            return currency.get();
-        } else {
-            throw new RecordNotFoundException(String.format("Currency with id %s not found", id));
-        }
+        //return currencyRepository.findById(id).orElseThrow(RuntimeException::new);
+        return currencyRepository.findById(id)
+                .orElseThrow(()-> new RecordNotFoundException(String.format("Currency with id %s not found", id)));
+    }
+
+    @Override
+    public Currency findByName(String currencyCode){
+        return currencyRepository.findByCurrencyCode(currencyCode)
+                .orElseThrow(()-> new RecordNotFoundException(String.format("Currency %s not found", currencyCode)));
     }
 
     @Override

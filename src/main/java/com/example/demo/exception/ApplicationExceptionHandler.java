@@ -5,25 +5,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.CONFLICT) //posts duplicate when in entity is unique
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     String handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex){
-        return ex.getMessage();
+        return "Duplicates not allowed";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(RecordNotFoundException.class)
     String handlerRecordNotFoundException(RecordNotFoundException ex){
-        return ex.getMessage();
+        return ex.getMessage(); //in service will be specified
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND) //get not existing record
     @ExceptionHandler(EmptyResultDataAccessException.class)
     String handlerEmptyResultDataAccessException(EmptyResultDataAccessException ex){
         return "Record not found";

@@ -9,10 +9,10 @@ import java.util.Set;
 public interface CurrencyService {
 
 
-    Currency addCurrency(Currency currency) throws SQLIntegrityConstraintViolationException;
-    void  deleteCurrency(Long id) throws RecordNotFoundException;
-    Currency findByName(String name) throws RecordNotFoundException;
-    Currency findById(Long id)throws RecordNotFoundException;
+    Currency addCurrency(Currency currency);
+    void  deleteCurrency(Long id) ;
+    Currency findByName(String name);
+    Currency findById(Long id);
     Set<Currency> findAll();
 }
 

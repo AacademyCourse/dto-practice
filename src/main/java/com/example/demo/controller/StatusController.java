@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ public class StatusController {
 
     @Autowired
     StatusServiceImpl statusServiceImpl;
-
     @Autowired
     StatusConvertor statusConvertor;
 
@@ -32,6 +30,14 @@ public class StatusController {
         return ResponseEntity
                 .ok()
                 .body(statusResponse);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<String> deleteById(@PathVariable Long id){
+        statusServiceImpl.deleteStatus(id);
+        return ResponseEntity
+                .ok()
+                .body(String.format("%d deleted", id));
     }
 
     @GetMapping(path = "/{id}")
@@ -52,11 +58,11 @@ public class StatusController {
                 .body(statusResponses);
     }
 
-    @DeleteMapping(path = "/{id}")
-    ResponseEntity<String> deleteById(@PathVariable Long id){
-        statusServiceImpl.deleteStatus(id);
+    @GetMapping(path = "/name/{statusName}")
+    ResponseEntity<StatusResponse> findByName(@PathVariable String statusName){
         return ResponseEntity
-                .ok()
-                .body(String.format("%d deleted", id));
+                .status(HttpStatus.FOUND)
+                .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findByName(statusName)));
     }
+
 }
