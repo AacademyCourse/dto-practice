@@ -94,7 +94,7 @@ public class ClientServiceImpl implements ClientService {
         modedClient.setFistName(client.getFirstName());
         modedClient.setLastName(client.getLastName());
         modedClient.setEmail(client.getEmail());
-        modedClient.setPassword(client.getPassword());
+        modedClient.setPassword(bCryptPasswordEncoder.encode(client.getPassword()));
         modedClient.setAddress(client.getAddress());
         modedClient.setStatuses(Set.of(status));
         return clientRepository.save(modedClient);
