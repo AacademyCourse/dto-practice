@@ -10,8 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Component

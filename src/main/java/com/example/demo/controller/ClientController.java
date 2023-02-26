@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,12 +53,9 @@ public class ClientController {
     }
 
     @PutMapping (path = "/{id}/update")
-    public Client updateClient(@PathVariable Long id, @RequestBody @Valid ClientRequest client) {
-        Client getClient = clientService.getClient(id);
-        getClient.setFistName(client.getFirstName());
-        getClient.setLastName(client.getLastName());
-        getClient.setAddress(client.getAddress());
-        return clientService.updateClient(id, getClient);
+    public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id, @RequestBody @Valid ClientRequest client) throws StatusNotFoundException {
+        Client modedClient = clientService.updateClient(id, client);
+        return ResponseEntity.status(HttpStatus.OK).body(clientConverter.toClientResponse(modedClient));
     }
 
     @DeleteMapping (path = "{id}/delete")

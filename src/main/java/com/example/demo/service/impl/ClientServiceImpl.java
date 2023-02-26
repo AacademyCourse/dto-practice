@@ -82,16 +82,21 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updateClient(Long id, Client client) {
-        Client modedClient = new Client();
-        modedClient.setId(client.getId());
-        modedClient.setFistName(client.getFistName());
+    public Client updateClient(Long id, ClientRequest client) throws StatusNotFoundException {
+        Status status;
+        Optional<Status> status1 = statusService.findStatusByName(client.getStatus());
+        if (status1.isPresent()) {
+            status = status1.get();
+        } else {
+            throw new StatusNotFoundException(String.format("Status %s not found", client.getStatus()));
+        }
+        Client modedClient = getClient(id);
+        modedClient.setFistName(client.getFirstName());
         modedClient.setLastName(client.getLastName());
-        modedClient.setIban(client.getIban());
-        modedClient.setBalance(client.getBalance());
+        modedClient.setEmail(client.getEmail());
+        modedClient.setPassword(client.getPassword());
         modedClient.setAddress(client.getAddress());
-        modedClient.setStatuses(client.getStatuses());
-        modedClient.setTransactions(client.getTransactions());
+        modedClient.setStatuses(Set.of(status));
         return clientRepository.save(modedClient);
     }
 
