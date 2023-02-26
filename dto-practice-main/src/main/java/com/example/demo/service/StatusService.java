@@ -10,5 +10,5 @@ public interface StatusService {
     void deleteStatus (Long id);
     Status findById(Long id);
     Set<Status> findAll();
-    Optional <Status> findByName(String status);
+    Optional<Status> findByName(String status);
 }

@@ -19,29 +19,25 @@ public class StatusServiceImpl implements StatusService {
     public StatusServiceImpl(StatusRepository statusRepository) {
         this.statusRepository = statusRepository;
     }
-
     @Override
     public Status addStatus(Status status) {
-       return statusRepository.save(status);
+        return statusRepository.save(status);
     }
-
     @Override
     public void deleteStatus(Long id) {
-       statusRepository.deleteById(id);
+        statusRepository.deleteById(id);
     }
-
     @Override
     public Status findById(Long id) {
         return statusRepository.findById(id).orElseThrow();
     }
-
     @Override
     public Set<Status> findAll() {
         return new HashSet<>(statusRepository.findAll());
     }
 
     @Override
-    public Optional<Status> findByName(String status) throws  {
+    public Optional<Status> findByName(String status) {
         return statusRepository.findByStatusName(status);
     }
 }
