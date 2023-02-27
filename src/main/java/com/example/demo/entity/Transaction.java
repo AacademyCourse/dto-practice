@@ -32,4 +32,5 @@ public class Transaction {
     private Currency currency;
     private Instant date;
 
+    private String reason;
 }
