@@ -22,10 +22,8 @@ public class Client {
 
     @Column(unique = true)
     private String email;
-
-    @Column()
+    @Column
     private String password;
-
     @Column(nullable = false)
     private String firstName;
 
