@@ -22,7 +22,6 @@ public class ClientServiceImpl implements ClientService {
     private final ClientConvertor clientConvertor;
     private final StatusService statusService;
     private final ClientRepository clientRepository;
-    private final ClientService clientService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -30,14 +29,13 @@ public class ClientServiceImpl implements ClientService {
         this.clientConvertor = clientConvertor;
         this.statusService = statusService;
         this.clientRepository = clientRepository;
-        this.clientService = clientService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
     public Client saveClient(ClientRequest client) throws RecordNotFoundException {
         //Check if status exists in status table
-        Optional<Status> status = statusService.findByName(client.getStatus());
+        Optional<Status> status = Optional.ofNullable(statusService.findByStatusName(client.getStatus()));
         if(status.isPresent()){
             status.get();
         } else {
@@ -61,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client updateClient(Client client) throws RecordNotFoundException {
-        Optional<Client> clients = clientRepository.findById(clientService.getClient(client.getId()));
+        Optional<Client> clients = clientRepository.findById(client.getId());
         if (clients.isEmpty()) {
             throw new RecordNotFoundException("User not found or does not exist");
         } else if (!bCryptPasswordEncoder.matches(
@@ -70,12 +68,12 @@ public class ClientServiceImpl implements ClientService {
             throw new RecordNotFoundException("User not found");
         } else if (clients.equals(client)){
             Client updateClient = new Client();
-        updateClient.setFirstName(client.getFirstName());
-        updateClient.setLastName(client.getLastName());
-        updateClient.setBalance(client.getBalance());
-        updateClient.setAddress(client.getAddress());
-        updateClient.setPassword(client.getPassword());
-        updateClient.setStatuses(client.getStatuses());
+            updateClient.setFirstName(client.getFirstName());
+            updateClient.setLastName(client.getLastName());
+            updateClient.setBalance(client.getBalance());
+            updateClient.setAddress(client.getAddress());
+            updateClient.setPassword(client.getPassword());
+            updateClient.setStatuses(client.getStatuses());
             return clientRepository.save(updateClient);
         }
         return clients.get();

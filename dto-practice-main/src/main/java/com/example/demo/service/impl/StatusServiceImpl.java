@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Status;
+import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.StatusService;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,8 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public Optional<Status> findByName(String status) {
-        return statusRepository.findByStatusName(status);
+    public Status findByStatusName(String status) throws RecordNotFoundException {
+        return statusRepository.findByStatusName(status)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Status %s not found", status)));
     }
 }
