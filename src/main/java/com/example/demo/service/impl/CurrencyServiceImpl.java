@@ -31,14 +31,14 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public Currency findById(Long id) {
+    public Currency findById(Long id) throws RecordNotFoundException {
         //return currencyRepository.findById(id).orElseThrow(RuntimeException::new);
         return currencyRepository.findById(id)
                 .orElseThrow(()-> new RecordNotFoundException(String.format("Currency with id %s not found", id)));
     }
 
     @Override
-    public Currency findByName(String currencyCode){
+    public Currency findByName(String currencyCode) throws RecordNotFoundException {
         return currencyRepository.findByCurrencyCode(currencyCode)
                 .orElseThrow(()-> new RecordNotFoundException(String.format("Currency %s not found", currencyCode)));
     }

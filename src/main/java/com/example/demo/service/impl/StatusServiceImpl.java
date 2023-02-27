@@ -32,13 +32,13 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public Status findById(Long id) {
+    public Status findById(Long id) throws RecordNotFoundException {
         return statusRepository.findById(id)
              .orElseThrow(() -> new RecordNotFoundException(String.format("Status with id %s not found", id)));
     }
 
     @Override
-    public Status findByName(String status){
+    public Status findByName(String status) throws RecordNotFoundException {
         return statusRepository.findByStatusName(status)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Status %s not found", status)));
     }
@@ -48,8 +48,4 @@ public class StatusServiceImpl implements StatusService {
         return new HashSet<>(statusRepository.findAll());
     }
 
-    @Override
-    public Optional<Status> findByName(String status) {
-        return statusRepository.findByStatusName(status);
-    }
 }

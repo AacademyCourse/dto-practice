@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
-
-@NoArgsConstructor
+import org.springframework.stereotype.Component;
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class StatusRequest {
-
-    @NotNull
-    String statusName;
+@Component
+public class TransactionResponse {
+    private String message;
 }

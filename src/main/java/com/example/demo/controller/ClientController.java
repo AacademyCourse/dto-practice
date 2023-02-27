@@ -1,20 +1,19 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.convertor.ClientConvertor;
 import com.example.demo.dto.ClientPasswordUpdate;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
 import com.example.demo.dto.LoginRequest;
+import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.service.ClientService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-
-import javax.management.relation.RoleNotFoundException;
+import javax.validation.Valid;
 
 
 @RestController
@@ -24,23 +23,26 @@ public class ClientController {
 
     @Autowired
     ClientService clientService;
+    @Autowired
+    ClientConvertor convertor;
+
 
     @PostMapping
-    ResponseEntity<ClientResponse> save(@RequestBody ClientRequest clientRequest) {
+    ResponseEntity<ClientResponse> save(@RequestBody ClientRequest clientRequest) throws RecordNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(clientService.saveClient(clientRequest));
     }
 
     @PostMapping(path = "/login")
-    ResponseEntity<ClientResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
+    ResponseEntity<ClientResponse> login(@RequestBody @Valid LoginRequest loginRequest) throws RecordNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(clientService.login(loginRequest));
     }
 
     @PutMapping(path = "/pswd")
-    ResponseEntity<String> updateClient(@RequestBody @Valid ClientPasswordUpdate client) {
+    ResponseEntity<String> updateClient(@RequestBody @Valid ClientPasswordUpdate client) throws RecordNotFoundException {
         clientService.updateClient(client);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
@@ -48,7 +50,7 @@ public class ClientController {
     }
 
     @GetMapping(path = "/{id}")
-    ResponseEntity<ClientResponse> getClient(@PathVariable Long id) {
+    ResponseEntity<ClientResponse> getClient(@PathVariable Long id) throws RecordNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(clientService.getClient(id));

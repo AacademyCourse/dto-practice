@@ -11,8 +11,8 @@ public interface CurrencyService {
 
     Currency addCurrency(Currency currency);
     void  deleteCurrency(Long id) ;
-    Currency findByName(String name);
-    Currency findById(Long id);
+    Currency findByName(String name) throws RecordNotFoundException;
+    Currency findById(Long id) throws RecordNotFoundException;
     Set<Currency> findAll();
 }
 

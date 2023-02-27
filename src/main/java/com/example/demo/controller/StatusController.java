@@ -4,6 +4,7 @@ import com.example.demo.convertor.StatusConvertor;
 import com.example.demo.dto.StatusRequest;
 import com.example.demo.dto.StatusResponse;
 import com.example.demo.entity.Status;
+import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.service.impl.StatusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class StatusController {
     }
 
     @GetMapping(path = "/{id}")
-    ResponseEntity<StatusResponse> getById(@PathVariable Long id){
+    ResponseEntity<StatusResponse> getById(@PathVariable Long id) throws RecordNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findById(id)));
@@ -59,10 +60,10 @@ public class StatusController {
     }
 
     @GetMapping(path = "/name/{statusName}")
-    ResponseEntity<StatusResponse> findByName(@PathVariable String statusName){
+    ResponseEntity<StatusResponse> findByName(@PathVariable String name) throws RecordNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findByName(statusName)));
+                .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findByName(name)));
     }
 
 }

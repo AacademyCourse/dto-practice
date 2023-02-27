@@ -1,6 +1,7 @@
 package com.example.demo.exception;
 
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,7 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ApplicationExceptionHandler {
 
 

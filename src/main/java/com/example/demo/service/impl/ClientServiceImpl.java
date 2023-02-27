@@ -15,7 +15,7 @@ import com.example.demo.service.ClientService;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponse saveClient(ClientRequest clientRequest) {
+    public ClientResponse saveClient(ClientRequest clientRequest) throws RecordNotFoundException {
         Status status = statusService.findByName(clientRequest.getStatus()); //Check if status exists in status table
         Client clientToBeSaved = clientConvertor.toClient(clientRequest);
         clientToBeSaved.setStatuses(Set.of(status));
@@ -54,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional //not repository.save needed when updating
-    public void updateClient(ClientPasswordUpdate clientPasswordUpdate) {
+    public void updateClient(ClientPasswordUpdate clientPasswordUpdate) throws RecordNotFoundException {
         Optional<Client> client = clientRepository.findById(clientPasswordUpdate.getId());
         if(client.isEmpty()){
             throw  new RecordNotFoundException("User not found or invalid credentials");
@@ -68,13 +68,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponse getClient(Long id){
+    public ClientResponse getClient(Long id) throws RecordNotFoundException {
         return clientConvertor.toResponse(clientRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Id %s not found", id))));
     }
 
     @Override
-    public ClientResponse login(LoginRequest loginRequest){
+    public ClientResponse login(LoginRequest loginRequest) throws RecordNotFoundException {
        Optional<Client> client = clientRepository.findByEmail(loginRequest.getEmail());
        if(client.isEmpty()){
           throw  new RecordNotFoundException("User not found or invalid credentials");
@@ -82,6 +82,11 @@ public class ClientServiceImpl implements ClientService {
            throw  new RecordNotFoundException("User not found or password is wrong");
        }
         return clientConvertor.toResponse(client.get());
+    }
+
+    @Override
+    public Client findByEmail(String email) {
+        return clientRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
 
 }

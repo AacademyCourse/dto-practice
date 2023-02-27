@@ -4,12 +4,14 @@ import com.example.demo.convertor.CurrencyConvertor;
 import com.example.demo.dto.CurrencyRequest;
 import com.example.demo.dto.CurrencyResponse;
 import com.example.demo.entity.Currency;
+import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.service.impl.CurrencyServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,7 +45,7 @@ public class CurrencyController {
     }
 
     @GetMapping(path = "/{id}")
-    ResponseEntity<CurrencyResponse> getById(@PathVariable Long id){
+    ResponseEntity<CurrencyResponse> getById(@PathVariable Long id) throws RecordNotFoundException {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(currencyConvertor.convertToCurrencyResponse(currencyServiceImpl.findById(id)));
@@ -51,7 +53,7 @@ public class CurrencyController {
 
 
    @GetMapping(path = "/code/{currencyCode}")
-   ResponseEntity<CurrencyResponse> getByName(@PathVariable String currencyCode){
+   ResponseEntity<CurrencyResponse> getByName(@PathVariable String currencyCode) throws RecordNotFoundException {
        return ResponseEntity
                .status(HttpStatus.FOUND)
                .body(currencyConvertor.convertToCurrencyResponse(currencyServiceImpl.findByName(currencyCode)));
