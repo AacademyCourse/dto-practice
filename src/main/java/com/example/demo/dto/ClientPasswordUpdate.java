@@ -1,22 +1,23 @@
 package com.example.demo.dto;
 
-
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class LoginRequest {
+public class ClientPasswordUpdate {
+
     @NotNull
-    @Email
-    String email;
+    private Long id;
+
     @NotNull
-    String password;
+    private String password;
+
+    @NotNull
+    private String newPassword;
 }

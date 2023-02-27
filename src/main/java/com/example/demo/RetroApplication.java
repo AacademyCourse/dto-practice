@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class RetroApplication {
 
@@ -17,5 +19,8 @@ public class RetroApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RetroApplication.class, args);
 	}
-
+		@Bean
+		public BCryptPasswordEncoder bCryptPasswordEncoder(){
+			return new BCryptPasswordEncoder();
+		}
 }

@@ -1,15 +1,21 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.convertor.ClientConvertor;
+
+import com.example.demo.dto.ClientPasswordUpdate;
 import com.example.demo.dto.ClientRequest;
+import com.example.demo.dto.ClientResponse;
+
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
 import com.example.demo.entity.Status;
 import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.repository.ClientRepository;
 import com.example.demo.service.ClientService;
-import com.example.demo.service.StatusService;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,57 +24,64 @@ import java.util.Set;
 
 @Service
 public class ClientServiceImpl implements ClientService {
-   private final ClientConvertor clientConvertor;
-   private final StatusService statusService;
-   private final ClientRepository clientRepository;
-   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-   @Autowired
-    public ClientServiceImpl(ClientConvertor clientConvertor, StatusService statusService, ClientRepository clientRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.clientConvertor = clientConvertor;
+
+    private final StatusServiceImpl statusService;
+    private final ClientConvertor clientConvertor;
+    private final ClientRepository clientRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    public ClientServiceImpl(StatusServiceImpl statusService, ClientConvertor clientConvertor, ClientRepository clientRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.statusService = statusService;
+        this.clientConvertor = clientConvertor;
         this.clientRepository = clientRepository;
-       this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-   }
-
-    @Override
-    public Client saveClient(ClientRequest client) throws RecordNotFoundException {
-         //Check if status exists in status table
-//         Status status = statusService.findByName(client.getStatus()).orElseThrow(StatusNotFoundException::new);
-        Optional<Status> status = statusService.findByName(client.getStatus());
-        if(status.isPresent()){
-            status.get();
-        } else {
-            throw new RecordNotFoundException(String.format("Status %s not found",client.getStatus()));
-        }
-        Client clientToBeSaved = clientConvertor.toClient(client);
-         clientToBeSaved.setStatuses(Set.of(status.get()));
-         return clientRepository.save(clientToBeSaved);
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-     public Client login (LoginRequest loginRequest) throws RecordNotFoundException {
-        Optional<Client> client = clientRepository.findByEmail(loginRequest.getEmail());
+    @Override
+    public ClientResponse saveClient(ClientRequest clientRequest) {
+        Status status = statusService.findByName(clientRequest.getStatus()); //Check if status exists in status table
+        Client clientToBeSaved = clientConvertor.toClient(clientRequest);
+        clientToBeSaved.setStatuses(Set.of(status));
+        return clientConvertor.toResponse(clientRepository.save(clientToBeSaved));
+    }
+
+    @Override
+    public void deleteClient(Long id) {
+        clientRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional //not repository.save needed when updating
+    public void updateClient(ClientPasswordUpdate clientPasswordUpdate) {
+        Optional<Client> client = clientRepository.findById(clientPasswordUpdate.getId());
         if(client.isEmpty()){
-            throw new RecordNotFoundException("User not found or invalid credentials");
+            throw  new RecordNotFoundException("User not found or invalid credentials");
+        } else if(!bCryptPasswordEncoder.matches(
+                clientPasswordUpdate.getPassword(),
+                client.get().getPassword())){
+            throw  new RecordNotFoundException("User not found or password is wrong");
+        } else {
+            client.get().setPassword(clientPasswordUpdate.getNewPassword());
         }
-        else if(!bCryptPasswordEncoder.matches(loginRequest.getPassword(),client.get().getPassword())){
-            throw new RecordNotFoundException("User not found or invalid credentials");
-        }
-        return client.get();
     }
 
     @Override
-    public Client updateClient(Client client) {
-        return null;
+    public ClientResponse getClient(Long id){
+        return clientConvertor.toResponse(clientRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Id %s not found", id))));
     }
 
     @Override
-    public Client getClient(Long id) {
-        return null;
+    public ClientResponse login(LoginRequest loginRequest){
+       Optional<Client> client = clientRepository.findByEmail(loginRequest.getEmail());
+       if(client.isEmpty()){
+          throw  new RecordNotFoundException("User not found or invalid credentials");
+       } else if(bCryptPasswordEncoder.matches(loginRequest.getPassword(), client.get().getPassword())){
+           throw  new RecordNotFoundException("User not found or password is wrong");
+       }
+        return clientConvertor.toResponse(client.get());
     }
 
-    @Override
-    public Client deleteClient(Long id) {
-        return null;
-    }
 }

@@ -14,4 +14,5 @@ public interface ClientService {
     Client deleteClient(Long id);
     Client login(LoginRequest loginRequest) throws RecordNotFoundException;
 
+
 }

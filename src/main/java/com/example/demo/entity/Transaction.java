@@ -7,10 +7,10 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "trn")
@@ -25,10 +25,9 @@ public class Transaction {
     private Client sender;
     @ManyToOne
     @JsonManagedReference
-    private Client reciever;
+    private Client receiver;
     @ManyToOne
     private Currency currency;
     private Instant date;
     private String reason;
-
 }

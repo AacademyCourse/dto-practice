@@ -2,17 +2,17 @@ package com.example.demo.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.springframework.stereotype.Component;
-
-@Component
-@AllArgsConstructor
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @Getter
 @Setter
 public class CurrencyRequest {
+
     @NotNull
-    @Size(min=2,max=4,message = "Currency name should be from 2 to 4 characters")
-    private String currencyName;
+    @Size(min = 2, max=4, message = "min = 2, max=4,")
+    String currencyName;
 }

@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -14,21 +15,21 @@ import lombok.Setter;
 @Setter
 public class ClientRequest {
 
-    @Size(min = 2, message = "Client first name should contain more than 2 characters")
+    @Size(min =2, message = "Client first name should contain more than 2 characters")
     private String firstName;
-    @Size(min = 3, message = "Client last name should contain more than 3 characters")
+    @Size(min =3, message = "Client first name should contain more than 2 characters")
     private String lastName;
-    @Email(message = "Email should have proper email format.")
+    @Size(min =2, message = "Email should have proper email format")
     private String email;
-    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}",
-            message = " Password should contain, \n" +
-                    "Min 1 uppercase letter.\n" +
-                    "Min 1 lowercase letter.\n" +
-                    "Min 1 special character.\n" +
-                    "Min 1 number.\n" +
-                    "Min 8 characters.\n" +
-                    "Max 30 characters.")
+    @Pattern(regexp = "^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$", message = "" +
+            "At least one upper case English letter\n" +
+            "At least one lower case English letter\n" +
+            "At least one digit\n" +
+            "At least one special character\n" +
+            "Minimum eight in length")
     private String password;
-    private String status;
+    private String status; //no need to be Status
     private String address;
+
+
 }
