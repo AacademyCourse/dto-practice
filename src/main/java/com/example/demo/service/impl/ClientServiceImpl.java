@@ -30,14 +30,15 @@ public class ClientServiceImpl implements ClientService {
     private final ClientConverter clientConverter;
 
     private final StatusService statusService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository, ClientConverter clientConverter, StatusService statusService) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientConverter clientConverter, StatusService statusService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.clientConverter = clientConverter;
         this.statusService = statusService;
         this.clientRepository = clientRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
