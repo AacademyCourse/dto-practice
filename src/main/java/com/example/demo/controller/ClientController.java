@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ClientPasswordUpdate;
-import com.example.demo.dto.ClientRequest;
-import com.example.demo.dto.ClientResponse;
-import com.example.demo.dto.LoginRequest;
+import com.example.demo.convertor.ClientConvertor;
+import com.example.demo.dto.*;
 import com.example.demo.service.ClientService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,22 +18,25 @@ public class ClientController {
     @Autowired
     ClientService clientService;
 
+    @Autowired
+    ClientConvertor clientConvertor;
+
     @PostMapping
     ResponseEntity<ClientResponse> save(@RequestBody ClientRequest clientRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(clientService.saveClient(clientRequest));
+                .body(clientConvertor.toResponse(clientService.saveClient(clientRequest)));
     }
 
     @PostMapping(path = "/login")
-    ResponseEntity<ClientResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
+    ResponseEntity<ClientResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(clientService.login(loginRequest));
     }
-
+    @Transactional
     @PutMapping(path = "/pswd")
-    ResponseEntity<String> updateClient(@RequestBody @Valid ClientPasswordUpdate client) {
+    ResponseEntity<String> updateClient(@Valid @RequestBody ClientPasswordUpdate client) {
         clientService.updateClient(client);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
@@ -45,8 +47,16 @@ public class ClientController {
     ResponseEntity<ClientResponse> getClient(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(clientService.getClient(id));
+                .body(clientConvertor.toResponse(clientService.getClient(id)));
     }
+
+    @GetMapping(path = "/email/{name}")
+    ResponseEntity<ClientResponse> getByEmail(@PathVariable @Valid String name) {
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(clientConvertor.toResponse(clientService.findByEmail(name)));
+    }
+
 
     @DeleteMapping(path = "/{id}")
     ResponseEntity<String> deleteClient(@PathVariable Long id){

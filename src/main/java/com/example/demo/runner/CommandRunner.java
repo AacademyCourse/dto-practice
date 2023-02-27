@@ -46,13 +46,24 @@ public class CommandRunner implements CommandLineRunner {
         status3.setStatusName("GUEST");
         statusRepository.saveAll(List.of(status1, status2, status3));
 
+        Client client1 = new Client();
+        client1.setFirstName("Lilly");
+        client1.setLastName("Moneva");
+        client1.setIban("iban");
+        client1.setEmail("lilly@gmail.com");
+        client1.setAddress("client's address");
+        client1.setPassword(bCryptPasswordEncoder.encode("1"));
+        client1.setBalance(new BigDecimal("10"));
+        clientRepository.save(client1);
+
         Client client = new Client();
-        client.setFirstName("Lilly");
-        client.setLastName("Moneva");
+        client.setFirstName("Billy");
+        client.setLastName("Bobev");
         client.setIban("iban");
+        client.setEmail("billy@gmail.com");
         client.setAddress("client's address");
         client.setPassword(bCryptPasswordEncoder.encode("1"));
-        client.setBalance(new BigDecimal("0"));
+        client.setBalance(new BigDecimal("10"));
         clientRepository.save(client);
 
     }

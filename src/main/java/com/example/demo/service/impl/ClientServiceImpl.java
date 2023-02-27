@@ -12,9 +12,10 @@ import com.example.demo.repository.ClientRepository;
 import com.example.demo.service.ClientService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,11 +36,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponse saveClient(ClientRequest clientRequest) {
+    public Client saveClient(ClientRequest clientRequest) {
         Status status = statusService.findByName(clientRequest.getStatus()); //Check if status exists in status table
         Client clientToBeSaved = clientConvertor.toClient(clientRequest);
         clientToBeSaved.setStatuses(Set.of(status));
-        return clientConvertor.toResponse(clientRepository.save(clientToBeSaved));
+        return clientRepository.save(clientToBeSaved);
     }
 
     @Override
@@ -63,9 +64,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponse getClient(Long id){
-        return clientConvertor.toResponse(clientRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Id %s not found", id))));
+    public Client getClient(Long id){
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Id %s not found", id)));
     }
 
     @Override
@@ -77,6 +78,17 @@ public class ClientServiceImpl implements ClientService {
            throw  new RecordNotFoundException("User not found or password is wrong");
        }
         return clientConvertor.toResponse(client.get());
+    }
+
+    @Override
+    public Client findByEmail(String name) {
+        return clientRepository.findByEmail(name)
+                .orElseThrow(()-> new RecordNotFoundException("Client not found"));
+    }
+
+    @Override
+    public Set<Client> findAll() {
+        return new HashSet<>(clientRepository.findAll());
     }
 
 }

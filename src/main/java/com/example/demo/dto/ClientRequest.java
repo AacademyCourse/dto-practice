@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class ClientRequest {
     private String firstName;
     @Size(min =3, message = "Client first name should contain more than 2 characters")
     private String lastName;
-    @Size(min =2, message = "Email should have proper email format")
+    @Email(message = "Email should have proper email format")
     private String email;
     @Pattern(regexp = "^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$", message = "" +
             "At least one upper case English letter\n" +

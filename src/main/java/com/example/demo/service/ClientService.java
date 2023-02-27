@@ -6,12 +6,17 @@ import com.example.demo.dto.ClientResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
 
+
+import java.util.Set;
+
 public interface ClientService {
 
-    ClientResponse saveClient(ClientRequest client);
+    Client saveClient(ClientRequest client);
     void updateClient(ClientPasswordUpdate clientPasswordUpdate);
-    ClientResponse getClient(Long id);
+    Client getClient(Long id);
     void deleteClient(Long id);
     ClientResponse login (LoginRequest loginRequest);
 
+    Client findByEmail(String name);
+    Set<Client> findAll();
 }
