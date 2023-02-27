@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import com.example.demo.dto.ClientPasswordUpdate;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
@@ -12,9 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+
+import javax.management.relation.RoleNotFoundException;
+
+
 @RestController
 @RequestMapping(path = "/client")
 public class ClientController {
+
 
     @Autowired
     ClientService clientService;
@@ -55,5 +61,5 @@ public class ClientController {
                 .ok()
                 .body(String.format("%d deleted", id));
     }
+    }
 
-}

@@ -6,6 +6,7 @@ import com.example.demo.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -45,5 +46,10 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public Set<Status> findAll() {
         return new HashSet<>(statusRepository.findAll());
+    }
+
+    @Override
+    public Optional<Status> findByName(String status) {
+        return statusRepository.findByStatusName(status);
     }
 }

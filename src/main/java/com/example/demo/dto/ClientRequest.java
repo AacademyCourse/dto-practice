@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClientRequest {
+
     @Size(min =2, message = "Client first name should contain more than 2 characters")
     private String firstName;
     @Size(min =3, message = "Client first name should contain more than 2 characters")
@@ -27,5 +30,6 @@ public class ClientRequest {
     private String password;
     private String status; //no need to be Status
     private String address;
+
 
 }

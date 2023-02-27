@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
-public class RecordNotFoundException extends RuntimeException{
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class RecordNotFoundException extends Exception {
+
     public RecordNotFoundException(String message) {
         super(message);
     }

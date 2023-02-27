@@ -1,25 +1,30 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.convertor.ClientConvertor;
+
 import com.example.demo.dto.ClientPasswordUpdate;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
+
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
 import com.example.demo.entity.Status;
 import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.repository.ClientRepository;
 import com.example.demo.service.ClientService;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class ClientServiceImpl implements ClientService {
+
 
     private final StatusServiceImpl statusService;
     private final ClientConvertor clientConvertor;
