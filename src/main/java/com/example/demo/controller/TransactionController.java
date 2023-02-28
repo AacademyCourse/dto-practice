@@ -17,7 +17,7 @@ public class TransactionController {
 
     @Autowired
     private TransactionServiceImpl transactionService;
-    @PostMapping
+    @PostMapping (path = "/execute")
     public ResponseEntity<TransactionResponse> executeTransaction(@RequestBody TransactionRequest trnRequest) {
         return ResponseEntity.status(HttpStatus.OK).body((transactionService.performTransaction(trnRequest)));
     }

@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-@ToString
 @Entity
 @Table (name = "clients")
 public class Client {
@@ -36,6 +35,7 @@ public class Client {
     @Column (name = "iban", unique = true)
     private String iban;
 
+    @Column(name = "address")
     private String address;
 
     @Column (name = "balance")

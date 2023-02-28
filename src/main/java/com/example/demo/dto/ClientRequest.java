@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,7 +33,7 @@ public class ClientRequest {
             "Max 30 characters.\n")
     private String password;
 
-    @Size(min = 5, message = "Address should be min 5 characters!")
+    @Size(min = 4, message = "Address should be min 5 characters!")
     private String address;
 
     @NotNull

@@ -11,6 +11,7 @@ import com.example.demo.service.ClientService;
 import com.example.demo.service.TransactionService;
 import com.example.demo.util.TrnUtil;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionConverter converter;
     private final CurrencyServiceImpl currencyService;
     private final TransactionRepository transactionRepository;
+    @Autowired
     public TransactionServiceImpl(ClientService clientService, TransactionConverter converter, CurrencyServiceImpl currencyService, TransactionRepository transactionRepository) {
         this.clientService = clientService;
         this.converter = converter;

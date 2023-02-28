@@ -52,7 +52,7 @@ public class ClientController {
         return clientService.login(loginRequest);
     }
 
-    @PutMapping (path = "/{id}/update")
+    @PostMapping (path = "/{id}/update")
     public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id, @RequestBody @Valid ClientRequest client) throws StatusNotFoundException {
         Client modedClient = clientService.updateClient(id, client);
         return ResponseEntity.status(HttpStatus.OK).body(clientConverter.toClientResponse(modedClient));

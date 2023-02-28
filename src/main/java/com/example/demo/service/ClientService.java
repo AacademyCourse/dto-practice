@@ -6,7 +6,6 @@ import com.example.demo.entity.Client;
 import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.exception.StatusNotFoundException;
 
-import java.util.Optional;
 import java.util.Set;
 
 public interface ClientService {

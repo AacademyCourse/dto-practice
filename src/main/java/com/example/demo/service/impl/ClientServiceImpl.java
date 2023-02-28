@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.converter.ClientConverter;
-import com.example.demo.converter.StatusConverter;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
@@ -11,16 +10,12 @@ import com.example.demo.exception.StatusNotFoundException;
 import com.example.demo.repository.ClientRepository;
 import com.example.demo.service.ClientService;
 import com.example.demo.service.StatusService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 

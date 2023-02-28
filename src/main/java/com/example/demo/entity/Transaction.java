@@ -12,7 +12,6 @@ import java.time.Instant;
 @Getter
 @Setter
 @Builder
-@ToString
 @Entity
 @Table (name = "trn")
 public class Transaction {

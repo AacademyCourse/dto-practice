@@ -3,13 +3,13 @@ package com.example.demo.converter;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
 import com.example.demo.entity.Client;
-import jakarta.persistence.GeneratedValue;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.UUID;
 
 @Component
@@ -26,8 +26,8 @@ public class ClientConverter {
                 .password(bCryptPasswordEncoder.encode(clientRequest.getPassword()))
                 .address(clientRequest.getAddress())
                 .iban(uuid.toString())
-//                .transactions(new HashSet<>())
-//                .statuses(new HashSet<>())
+                .transactions(new HashSet<>())
+                .statuses(new HashSet<>())
                 .balance(new BigDecimal("0.0"))
                 .build();
     }
