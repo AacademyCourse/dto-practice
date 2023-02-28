@@ -11,6 +11,5 @@ public interface TransactionService {
 
     TransactionResponse performTransaction(TransactionRequest transaction);
     Set<Transaction> findAll();
-
     String deposit(TransactionDeposit transactionDeposit);
 }

@@ -10,6 +10,7 @@ import com.example.demo.service.TransactionService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +38,7 @@ public class TransactionController {
                 .body(service.performTransaction(transactionRequest));
     }
 
-    /*@Email @NotNull with @Valid not working*/
+
     @Transactional
     @PostMapping(path = "/deposit")
     ResponseEntity<String> deposit (@Valid @RequestBody TransactionDeposit transactionDeposit){

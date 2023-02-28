@@ -14,7 +14,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -51,15 +50,14 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional //not repository.save needed when updating
     public void updateClient(ClientPasswordUpdate clientPasswordUpdate) {
-        Optional<Client> client = clientRepository.findById(clientPasswordUpdate.getId());
-        if(client.isEmpty()){
-            throw  new RecordNotFoundException("User not found or invalid credentials");
-        } else if(!bCryptPasswordEncoder.matches(
+        Client client = clientRepository.findById(clientPasswordUpdate.getId())
+                .orElseThrow(()-> new RecordNotFoundException("Client not found)"));
+       if(!bCryptPasswordEncoder.matches(
                 clientPasswordUpdate.getPassword(),
-                client.get().getPassword())){
+                client.getPassword())){
             throw  new RecordNotFoundException("User not found or password is wrong");
         } else {
-            client.get().setPassword(clientPasswordUpdate.getNewPassword());
+            client.setPassword(clientPasswordUpdate.getNewPassword());
         }
     }
 

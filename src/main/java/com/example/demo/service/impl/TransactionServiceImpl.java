@@ -15,8 +15,12 @@ import com.example.demo.util.trnUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+
 import static java.math.BigDecimal.valueOf;
 
 
@@ -37,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponse performTransaction(TransactionRequest transaction) {
         Client sender = clientService.findByEmail("lilly@gmail.com");
         Client receiver = clientService.findByEmail("billy@gmail.com");
-        if(trnUtil.compareAmounts(sender.getBalance(), transaction.getAmount())){
+        if (trnUtil.compareAmounts(sender.getBalance(), transaction.getAmount())) {
             sender.setBalance(valueOf(sender.getBalance().doubleValue() - transaction.getAmount()));
             receiver.setBalance(valueOf(receiver.getBalance().doubleValue() + transaction.getAmount()));
         }
@@ -45,11 +49,11 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction trn = convertor.toTransaction(sender, receiver, trnCurrency,
                 valueOf(transaction.getAmount()), transaction.getReason());
         Transaction savedTransaction = transactionRepository.save(trn);
-        System.out.print("sender new balance: "+ sender.getBalance());
-        System.out.print("receiver new balance: "+ receiver.getBalance());
+        System.out.print("sender new balance: " + sender.getBalance());
+        System.out.print("receiver new balance: " + receiver.getBalance());
         return new TransactionResponse(String.format("Transaction to %s was executed.",
-                receiver.getEmail())  + receiver.getBalance());
-        }
+                receiver.getEmail()) + receiver.getBalance());
+    }
 
     @Override
     public Set<Transaction> findAll() {
@@ -58,7 +62,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public String deposit(TransactionDeposit transactionDeposit) {
-        Client client = clientService.findByEmail(transactionDeposit.getEmail());
+        Client client = clientService.findByEmail(transactionDeposit.getEmail()); //--> Client not found
         client.setBalance(client.getBalance().add(transactionDeposit.getAmount()));
         return (String.format("Deposit to %s was executed.", client.getEmail()));
     }
