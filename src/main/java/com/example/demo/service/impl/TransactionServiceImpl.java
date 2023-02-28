@@ -15,10 +15,7 @@ import com.example.demo.util.trnUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static java.math.BigDecimal.valueOf;
@@ -51,7 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction savedTransaction = transactionRepository.save(trn);
         System.out.print("sender new balance: " + sender.getBalance());
         System.out.print("receiver new balance: " + receiver.getBalance());
-        return new TransactionResponse(String.format("Transaction to %s was executed.",
+        return new TransactionResponse(String.format("Transaction to %s was executed. ",
                 receiver.getEmail()) + receiver.getBalance());
     }
 

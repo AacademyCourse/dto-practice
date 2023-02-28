@@ -5,22 +5,18 @@ import com.example.demo.entity.Client;
 import com.example.demo.entity.Currency;
 import com.example.demo.entity.Transaction;
 import com.example.demo.repository.TransactionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Component
 public class TransactionConvertor {
-    private final TransactionRepository transactionRepository;
 
-    public TransactionConvertor(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
-    }
-
-    public Transaction toTransaction(Client sender, Client reciever, Currency currency, BigDecimal amount, String reason){
+    public Transaction toTransaction(Client sender, Client receiver, Currency currency, BigDecimal amount, String reason){
         return Transaction.builder()
                 .sender(sender)
-                .receiver(reciever)
+                .receiver(receiver)
                 .currency(currency)
                 .reason(reason)
                 .date(Instant.now())

@@ -2,11 +2,9 @@ package com.example.demo.service.impl;
 
 import com.example.demo.convertor.ClientConvertor;
 import com.example.demo.dto.ClientPasswordUpdate;
-import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
-import com.example.demo.entity.Status;
 import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.repository.ClientRepository;
 import com.example.demo.service.ClientService;
@@ -35,11 +33,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client saveClient(ClientRequest clientRequest) {
-        Status status = statusService.findByName(clientRequest.getStatus()); //Check if status exists in status table
-        Client clientToBeSaved = clientConvertor.toClient(clientRequest);
-        clientToBeSaved.setStatuses(Set.of(status));
-        return clientRepository.save(clientToBeSaved);
+    public Client saveClient(Client client) {
+
+//        Status status = statusService.findByName(clientRequest.getStatus()); //Check if status exists in status table
+//        Client clientToBeSaved = clientConvertor.toClient(clientRequest);
+//        clientToBeSaved.setStatuses(Set.of(status));
+//        return clientRepository.save(clientToBeSaved);
+       return clientRepository.save(client);
     }
 
     @Override

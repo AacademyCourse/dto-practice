@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.convertor.ClientConvertor;
 import com.example.demo.dto.*;
+import com.example.demo.entity.Client;
 import com.example.demo.service.ClientService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -10,22 +11,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping(path = "/client")
 public class ClientController {
 
     @Autowired
     ClientService clientService;
-
     @Autowired
     ClientConvertor clientConvertor;
 
-    @PostMapping
-    ResponseEntity<ClientResponse> save(@RequestBody ClientRequest clientRequest) {
+    @PostMapping(path = "/save")
+    ResponseEntity<ClientResponse> save(@Valid @RequestBody ClientRequest clientRequest) {
+        Client client = clientConvertor.toClient(clientRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(clientConvertor.toResponse(clientService.saveClient(clientRequest)));
+                .body(clientConvertor.toResponse(clientService.saveClient(client)));
     }
 
     @PostMapping(path = "/login")

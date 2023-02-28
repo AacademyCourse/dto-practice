@@ -20,12 +20,11 @@ public class CurrencyController {
 
     @Autowired
     CurrencyServiceImpl currencyServiceImpl;
-
     @Autowired
     CurrencyConvertor currencyConvertor;
 
     @PostMapping
-    ResponseEntity<CurrencyResponse> save(@Valid @RequestBody CurrencyRequest currencyRequest) throws SQLIntegrityConstraintViolationException {
+    ResponseEntity<CurrencyResponse> save(@Valid @RequestBody CurrencyRequest currencyRequest){
         Currency currency = currencyConvertor.convertToCurrency(currencyRequest);
         Currency currencySaved = currencyServiceImpl.addCurrency(currency);
         CurrencyResponse currencyResponse = currencyConvertor.convertToCurrencyResponse(currencySaved);

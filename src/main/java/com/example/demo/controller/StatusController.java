@@ -5,6 +5,7 @@ import com.example.demo.dto.StatusRequest;
 import com.example.demo.dto.StatusResponse;
 import com.example.demo.entity.Status;
 import com.example.demo.service.impl.StatusServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class StatusController {
     StatusConvertor statusConvertor;
 
     @PostMapping
-    ResponseEntity<StatusResponse> save (@RequestBody StatusRequest statusRequest) throws SQLIntegrityConstraintViolationException {
+    ResponseEntity<StatusResponse> save (@Valid @RequestBody StatusRequest statusRequest) throws SQLIntegrityConstraintViolationException {
         Status status = statusConvertor.convertToStatus(statusRequest);
         Status savedStatus = statusServiceImpl.addStatus(status);
         StatusResponse statusResponse = statusConvertor.convertToStatusResponse(savedStatus);
