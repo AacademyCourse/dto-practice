@@ -8,7 +8,7 @@ import java.util.Set;
 public interface StatusService {
     Status addStatus(Status status);
     void deleteStatus(Long id);
-    Optional<Status> findStatusByName(String statusName);
+    Optional<Status> findByName(String name);
     Status findStatusById(Long id);
     Set<Status> findAll();
 }

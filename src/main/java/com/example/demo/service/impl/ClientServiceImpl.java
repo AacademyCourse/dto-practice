@@ -67,7 +67,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client saveClient(ClientRequest client) throws StatusNotFoundException {
         Status status;
-        Optional<Status> status1 = statusService.findStatusByName(client.getStatus());
+        Optional<Status> status1 = statusService.findByName(client.getStatus());
         if (status1.isPresent()) {
             status = status1.get();
         } else {
@@ -81,7 +81,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client updateClient(Long id, ClientRequest client) throws StatusNotFoundException {
         Status status;
-        Optional<Status> status1 = statusService.findStatusByName(client.getStatus());
+        Optional<Status> status1 = statusService.findByName(client.getStatus());
         if (status1.isPresent()) {
             status = status1.get();
         } else {
@@ -93,7 +93,7 @@ public class ClientServiceImpl implements ClientService {
         modedClient.setEmail(client.getEmail());
         modedClient.setPassword(bCryptPasswordEncoder.encode(client.getPassword()));
         modedClient.setAddress(client.getAddress());
-        modedClient.setStatuses(Set.of(status));
+        modedClient.getStatuses().add(status);
         return clientRepository.save(modedClient);
     }
 
