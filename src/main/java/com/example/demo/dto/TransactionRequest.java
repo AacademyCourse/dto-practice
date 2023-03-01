@@ -15,17 +15,17 @@ import org.springframework.stereotype.Component;
 @Setter
 public class TransactionRequest {
     @NotNull
-    @Email
+    @Email(message = "Email should have proper email format!")
     private String sourceEmail;
     @NotNull
-    @Email
+    @Email(message = "Email should have proper email format!")
     private String destinationEmail;
     @NotNull
-    @Size(min = 2)
+    @Size(min = 2, message = "Amount field should be min with 2 characters!")
     private Double amount;
     @NotNull
-    @Size(min = 2, max = 4)
+    @Size(message = "Currency should be from 2 to 4 characters!", min = 2, max = 4)
     private CurrencyRequest currency;
-    @Size(min = 4)
+    @Size(min = 4, message = "Reason field should be min with 5 characters!")
     private String reason;
 }

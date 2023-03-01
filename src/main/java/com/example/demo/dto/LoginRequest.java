@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class LoginRequest {
     @NotNull
-    @Email
+    @Email(message = "Email should have proper email format!")
     private String email;
     @NotNull
     private String password;
