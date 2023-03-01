@@ -1,17 +1,14 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Currency;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.stereotype.Component;
-@Getter
-@Setter
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
+@Builder
+@Getter
+@Setter
 public class TransactionRequest {
     @Email
     private String sourceEmail;

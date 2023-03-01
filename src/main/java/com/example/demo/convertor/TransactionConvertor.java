@@ -7,18 +7,20 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+
+
 @Component
 public class TransactionConvertor {
 
-
-    public Transaction toTransaction(Client sender, Client reciever, Currency currency, BigDecimal amount,String reason){
+    public Transaction toTransaction(Client sender, Client receiver, Currency currency, BigDecimal amount, String reason){
         return Transaction.builder()
                 .sender(sender)
-                .receiver(reciever)
+                .receiver(receiver)
                 .currency(currency)
                 .reason(reason)
                 .date(Instant.now())
                 .amount(amount)
                 .build();
     }
+
 }

@@ -7,18 +7,18 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
+@Getter
 @Entity
-@Table(name = "trn")
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
-
     private BigDecimal amount;
     @ManyToOne
     @JsonManagedReference

@@ -1,15 +1,15 @@
 package com.example.demo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
+
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-@Component
+@Getter
+@Builder
 public class TransactionResponse {
-    private String message;
+
+    private String transactionMessage;
 }

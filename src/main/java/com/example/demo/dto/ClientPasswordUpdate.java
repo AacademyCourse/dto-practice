@@ -1,11 +1,11 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,5 +20,6 @@ public class ClientPasswordUpdate {
     private String password;
 
     @NotNull
-    private String newPassword;
+    private String createPassword;
+
 }

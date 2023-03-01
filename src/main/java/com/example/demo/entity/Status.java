@@ -2,20 +2,23 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-@Setter
-@Getter
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
+@Getter
 @Entity
 @Table(name = "statuses")
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(unique = true)
-    private String statusName;
+    private String status;
 
 //    @ManyToMany
 //    @JoinTable(

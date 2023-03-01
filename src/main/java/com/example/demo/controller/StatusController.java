@@ -4,7 +4,6 @@ import com.example.demo.convertor.StatusConvertor;
 import com.example.demo.dto.StatusRequest;
 import com.example.demo.dto.StatusResponse;
 import com.example.demo.entity.Status;
-import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.service.impl.StatusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,55 +14,56 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/status")
+@RequestMapping(path = "statuses")
 public class StatusController {
-
     @Autowired
-    StatusServiceImpl statusServiceImpl;
+    StatusServiceImpl statusService;
     @Autowired
     StatusConvertor statusConvertor;
 
+    @GetMapping(path = "/name/{status}")
+    ResponseEntity<StatusResponse> findByName(@PathVariable String status){
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(statusConvertor.statusResponse(statusService.findByName(status)));
+    }
+
     @PostMapping
-    ResponseEntity<StatusResponse> save (@RequestBody StatusRequest statusRequest) throws SQLIntegrityConstraintViolationException {
-        Status status = statusConvertor.convertToStatus(statusRequest);
-        Status savedStatus = statusServiceImpl.addStatus(status);
-        StatusResponse statusResponse = statusConvertor.convertToStatusResponse(savedStatus);
+    ResponseEntity<StatusResponse> save(@RequestBody StatusRequest statusRequest) throws SQLIntegrityConstraintViolationException {
+        Status status = statusConvertor.convertStatus(statusRequest);
+        Status savedStatus = statusService.addStatus(status);
+        StatusResponse statusResponse = statusConvertor.statusResponse(savedStatus);
         return ResponseEntity
                 .ok()
                 .body(statusResponse);
     }
 
-    @DeleteMapping(path = "/{id}")
-    ResponseEntity<String> deleteById(@PathVariable Long id){
-        statusServiceImpl.deleteStatus(id);
-        return ResponseEntity
-                .ok()
-                .body(String.format("%d deleted", id));
-    }
-
-    @GetMapping(path = "/{id}")
-    ResponseEntity<StatusResponse> getById(@PathVariable Long id) throws RecordNotFoundException {
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findById(id)));
-    }
-
     @GetMapping(path = "/all")
-    ResponseEntity<Set<StatusResponse>> getAll(){
-        Set<StatusResponse> statusResponses = statusServiceImpl.findAll()
+    ResponseEntity<Set<StatusResponse>> getAll() {
+        Set<StatusResponse> statusResponses = statusService.findAll()
                 .stream()
-                .map(statusConvertor :: convertToStatusResponse)
+                .map(statusConvertor::statusResponse)
                 .collect(Collectors.toSet());
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(statusResponses);
     }
 
-    @GetMapping(path = "/name/{statusName}")
-    ResponseEntity<StatusResponse> findByName(@PathVariable String name) throws RecordNotFoundException {
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<String> deleteById(@PathVariable Long id){
+        statusService.deleteStatus(id);
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(statusConvertor.convertToStatusResponse(statusServiceImpl.findByName(name)));
+                .ok()
+                .body(String.format("%d deleted", id));
     }
+
+    @GetMapping(path = "/{id}")
+    ResponseEntity<StatusResponse> getById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(statusConvertor.statusResponse(statusService.findById(id)));
+
+    }
+
 
 }

@@ -5,19 +5,19 @@ import com.example.demo.dto.StatusResponse;
 import com.example.demo.entity.Status;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class StatusConvertor {
 
-    public Status convertToStatus(StatusRequest statusRequest){
+    public Status convertStatus (StatusRequest statusRequest) {
         return Status.builder()
-                .statusName(statusRequest.getStatusName())
+                .status(statusRequest.getStatus())
+                .build();
+    }
+    public StatusResponse statusResponse (Status statusName) {
+        return StatusResponse.builder()
+                .status(statusName.getStatus())
                 .build();
     }
 
-    public StatusResponse convertToStatusResponse(Status status){
-        return StatusResponse.builder()
-                .id(status.getId())
-                .statusName(status.getStatusName())
-                .build();
-    }
 }

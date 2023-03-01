@@ -1,51 +1,49 @@
 package com.example.demo.service.impl;
+
+
 import com.example.demo.entity.Status;
 import com.example.demo.exception.RecordNotFoundException;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class StatusServiceImpl implements StatusService {
-    @Autowired
     private final StatusRepository statusRepository;
-    public StatusServiceImpl(StatusRepository statusRepository) {
+
+    @Autowired
+    public StatusServiceImpl (StatusRepository statusRepository) {
         this.statusRepository = statusRepository;
     }
 
     @Override
-    public Status addStatus(Status status){
-        //the method throws SQLIntegrityConstraintViolationException, which is handled in ApplicationExceptionHandler.
-        //not needed try-catch or any throw here: the get request works without them and response with the message
+    public Status addStatus(Status status) {
         return statusRepository.save(status);
     }
 
     @Override
     public void deleteStatus(Long id) {
-        //the method throws EmptyResultDataAccessException, which is handled in ApplicationExceptionHandler.
-        //not needed try-catch or any throw here: the delete request works without them and  response with the message
-            statusRepository.deleteById(id);
+        statusRepository.deleteById(id);
     }
 
     @Override
-    public Status findById(Long id) throws RecordNotFoundException {
+    public Status findById(Long id) {
         return statusRepository.findById(id)
-             .orElseThrow(() -> new RecordNotFoundException(String.format("Status with id %s not found", id)));
-    }
-
-    @Override
-    public Status findByName(String status) throws RecordNotFoundException {
-        return statusRepository.findByStatusName(status)
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Status %s not found", status)));
+                .orElseThrow(()-> new RecordNotFoundException(String.format("Status %s not found", id)));
     }
 
     @Override
     public Set<Status> findAll() {
         return new HashSet<>(statusRepository.findAll());
     }
-
+    public Status findByName(String status) {
+        return Optional.ofNullable(statusRepository.findByStatus(status))
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Status %s not found", status)));
+    }
 }
