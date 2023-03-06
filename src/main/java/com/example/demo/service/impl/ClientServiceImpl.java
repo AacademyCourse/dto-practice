@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.converter.ClientConverter;
+import com.example.demo.converter.ClientConvertor;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
@@ -23,20 +23,20 @@ import java.util.Set;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
-    private final ClientConverter clientConverter;
+    private final ClientConvertor clientConvertor;
 
     private final StatusService statusService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository, ClientConverter clientConverter, StatusService statusService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.clientConverter = clientConverter;
-        this.statusService = statusService;
+    public ClientServiceImpl(ClientRepository clientRepository, ClientConvertor clientConvertor, StatusService statusService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.clientRepository = clientRepository;
+        this.clientConvertor = clientConvertor;
+        this.statusService = statusService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
 
     @Override
     public Set<Client> getClients() {
@@ -46,9 +46,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client getClient(Long id) {
         Client searchedClient = new Client();
-        if (clientRepository.findById(id).isPresent()) {
-            searchedClient = clientRepository.findById(id).get();
-        }
+        searchedClient = clientRepository.findById(id).orElseThrow();
         return searchedClient;
     }
 
@@ -73,8 +71,8 @@ public class ClientServiceImpl implements ClientService {
         } else {
             throw new StatusNotFoundException(String.format("Status %s not found", client.getStatus()));
         }
-        Client clientToBeSaved = clientConverter.convertToClient(client);
-        clientToBeSaved.setStatuses(Set.of(status));
+        Client clientToBeSaved = clientConvertor.convertToClient(client);
+        clientToBeSaved.getStatuses().add(status);
         return clientRepository.save(clientToBeSaved);
     }
 

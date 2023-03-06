@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.converter.ClientConverter;
+import com.example.demo.converter.ClientConvertor;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
 import com.example.demo.dto.LoginRequest;
@@ -24,27 +24,27 @@ public class ClientController {
     private ClientServiceImpl clientService;
 
     @Autowired
-    private ClientConverter clientConverter;
+    private ClientConvertor clientConvertor;
 
     @GetMapping(path = "/all")
     public ResponseEntity<Set<ClientResponse>> getClients() {
         Set<ClientResponse> clientResponses = new HashSet<>();
         Set<Client> clients = clientService.getClients();
         clients.forEach(
-                client -> clientResponses.add(clientConverter.toClientResponse(client))
+                client -> clientResponses.add(clientConvertor.toClientResponse(client))
         );
         return ResponseEntity.status(HttpStatus.OK).body(clientResponses);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<ClientResponse> getClient(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(clientConverter.toClientResponse(clientService.getClient(id)));
+        return ResponseEntity.status(HttpStatus.OK).body(clientConvertor.toClientResponse(clientService.getClient(id)));
     }
 
     @PostMapping(path = "/add")
     public ResponseEntity<ClientResponse> saveClient(@RequestBody @Valid ClientRequest client) throws StatusNotFoundException {
         Client newClient = clientService.saveClient(client);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientConverter.toClientResponse(newClient));
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientConvertor.toClientResponse(newClient));
     }
 
     @PostMapping(path = "/login")
@@ -55,7 +55,7 @@ public class ClientController {
     @PostMapping (path = "/{id}/update")
     public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id, @RequestBody @Valid ClientRequest client) throws StatusNotFoundException {
         Client modedClient = clientService.updateClient(id, client);
-        return ResponseEntity.status(HttpStatus.OK).body(clientConverter.toClientResponse(modedClient));
+        return ResponseEntity.status(HttpStatus.OK).body(clientConvertor.toClientResponse(modedClient));
     }
 
     @DeleteMapping (path = "{id}/delete")

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Component
 @NoArgsConstructor
-public class ClientConverter {
+public class ClientConvertor {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
