@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -44,7 +45,7 @@ public class Client {
             joinColumns = {@JoinColumn(name = "client_id")},
             inverseJoinColumns = {@JoinColumn(name = "status_id")}
     )
-    private Set<Status> statuses;
+    private Set<Status> statuses= new HashSet<>();
 
     @OneToMany(mappedBy = "sender")
     @JsonBackReference

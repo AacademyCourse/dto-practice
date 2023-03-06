@@ -7,6 +7,8 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.Client;
 import com.example.demo.exception.RecordNotFoundException;
 
+import java.util.Set;
+
 public interface ClientService {
     ClientResponse saveClient(ClientRequest client) throws RecordNotFoundException;
     void updateClient(ClientPasswordUpdate client) throws RecordNotFoundException;
@@ -14,5 +16,5 @@ public interface ClientService {
     void deleteClient(Long id);
     ClientResponse login(LoginRequest loginRequest) throws RecordNotFoundException;
     Client findByEmail(String email);
-
+    Set<Client> getClients();
 }

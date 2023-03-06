@@ -1,29 +1,22 @@
 package com.example.demo.convertor;
 
 
-import com.example.demo.dto.ClientPasswordUpdate;
 import com.example.demo.dto.ClientRequest;
 import com.example.demo.dto.ClientResponse;
 import com.example.demo.entity.Client;
-import com.example.demo.entity.Status;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-import java.util.Set;
-
 
 import java.util.UUID;
-
+@RequiredArgsConstructor
 @Component
 public class ClientConvertor {
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     public Client toClient(ClientRequest clientRequest){
         UUID uuid = UUID.randomUUID();
@@ -33,7 +26,7 @@ public class ClientConvertor {
                 .email(clientRequest.getEmail())
 
                 .iban(uuid.toString()) //sets the iban
-                .password(bCryptPasswordEncoder.encode( clientRequest.getPassword()))
+                .password(clientRequest.getPassword())
                 .balance(new BigDecimal("0"))    //default = 0
                 .build();
     }
@@ -47,7 +40,6 @@ public class ClientConvertor {
                 .email(client.getEmail())
                 .statuses(client.getStatuses())
                 .build();
-
     }
 
 
